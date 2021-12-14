@@ -13,6 +13,7 @@ module.exports = {
     ecmaFeatures: {
       impliedStrict: true,
     },
+    sourceType: 'module',
   },
   rules: { // modified sanctuary-style rules
     'array-bracket-newline': [ 'error', 'consistent' ],
