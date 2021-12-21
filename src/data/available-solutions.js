@@ -5,6 +5,10 @@ export default [
       {
         day: '01',
         title: 'Report Repair',
+      },
+      {
+        day: '02',
+        title: 'Password Philosophy',
         isCurrent: true,
       },
     ],
