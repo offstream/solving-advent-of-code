@@ -27,8 +27,10 @@ export const getPathToSiblingFile = curry(
 // asyncImport :: Str -> Async Error Obj
 export const asyncImport = Async.fromPromise(path => import(path))
 
+// asyncReadFile :: (Str, ?(Str|Obj)) -> Async e Buffer
+export const asyncReadFile = Async.fromPromise(readFile)
+
 // readSiblingInputFile :: (Obj, ?Str) -> Async e Str
-export const readSiblingInputFile = Async.fromPromise(
+export const readSiblingInputFile =
   (inputMeta, sibling = 'input.text') =>
-    readFile(getPathToSiblingFile(inputMeta, sibling), 'utf-8')
-)
+    asyncReadFile(getPathToSiblingFile(inputMeta, sibling), 'utf-8')

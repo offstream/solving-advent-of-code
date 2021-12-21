@@ -13,6 +13,10 @@ const cliFlags = {
     type: 'boolean',
     alias: 'a',
   },
+  current: {
+    type: 'boolean',
+    alias: 'c',
+  },
   year: {
     type: 'string',
     alias: 'y',
@@ -35,6 +39,7 @@ const cli = meow(`
     solve --year <year>
     solve --day <day>
     solve --all
+    solve --current
     solve --stop-on-errors [...args]
 
   Options:
@@ -49,6 +54,9 @@ const cli = meow(`
       specified.
     -a, --all
       Run all solutions. All arguments, --year and --day flags are ignored.
+    -c, --current
+      Run all solutions tagged current. All arguments, --all, --year and --day
+      flags are ignored.
     -s, --stop-on-errors
       Stop running solutions when an error is encountered.
 `, {

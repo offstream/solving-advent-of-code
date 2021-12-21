@@ -2,14 +2,16 @@ import path from 'path'
 import chalk from 'chalk'
 
 import {
-  Async, assign, compose, filter, isFunction, isSameType, objOf, map, sort,
+  Async, assign, chain, compose, filter, isFunction, isSameType, objOf, map, sort,
 } from './lib/deps'
 import { asyncImport, getCurrentDirectory } from './lib/helpers'
 import { __each, __logError, __logLines } from './lib/impure'
 
 // flattenSolutions :: Obj -> [ Obj ]
 const flattenSolutions = solnDir => solnDir.flatMap(
-  ({ year, days }) => days.map(({ day, title }) => ({ year, day, title }))
+  ({ year, days }) => days.map(
+    ({ day, title, isCurrent }) => ({ year, day, title, isCurrent })
+  )
 )
 
 // assignPathToSolution :: (Str, Str) -> Obj -> Obj
@@ -19,9 +21,12 @@ const assignPathToSolution = parent => soln => ({
 })
 
 // makeSolutionSelector :: (Obj, Number) -> Obj -> Boolean
-const makeSolutionSelector = ({ all, year, day }, maxYear) => {
+const makeSolutionSelector = ({ all, current, year, day }, maxYear) => {
   if (all) {
     return () => true
+  }
+  if (current) {
+    return ({ isCurrent }) => isCurrent
   }
   if (year && day) {
     return ({ year: y, day: d }) => year === y && day === d
@@ -65,21 +70,23 @@ const loadSolution = meta =>
     .coalesce(objOf('err'), objOf('msg'))
     .map(assign({ meta }))
 
-// loadSolutions :: [ Obj ] -> Async e [ Obj ]
+// loadSolutions :: [ Obj ] -> Async Error [ Obj ]
 const loadSolutions = compose(
+  chain(
+    res => res.length
+      ? Async.Resolved(res)
+      : Async.Rejected(Error('Could not find any solution'))
+  ),
   Async.all,
   map(loadSolution)
 )
 
-// __runSolutions :: !Impure ([ Obj ] -> ())
-const __runSolutions = __each(soln => {
-  const { year, day, title = '' } = soln.meta
+// __logSolutions :: !Impure ([ Obj ] -> ())
+const __logSolutions = __each(soln => {
+  const { year, day, title } = soln.meta
   console.log('')
-  console.log(
-    chalk.inverse(` Year ${year}, Day ${day} `),
-    chalk.underline(title.padEnd(59, ' '))
-  )
-  console.log('')
+  console.log(chalk.inverse(` Year ${year}, Day ${day} `), title)
+  console.log('='.repeat(80))
   if (soln.err) {
     __logError(soln.err)
   } else {
@@ -102,17 +109,14 @@ export default ({
     Math.max(...availableSolutions.map(({ year }) => Number(year)))
   )
 
-  const solutions = compose(
+  const selectSolutions = compose(
+    loadSolutions,
     sort(solutionsSorter),
     map(setSolutionPath),
     filter(isSelected),
     flattenSolutions
-  )(availableSolutions)
+  )
 
-  if (!solutions.length) {
-    __logError(Error('Could not find any solution'))
-    return 1
-  }
-
-  loadSolutions(solutions).fork(__logError, __runSolutions)
+  selectSolutions(availableSolutions)
+    .fork(__logError, __logSolutions)
 }

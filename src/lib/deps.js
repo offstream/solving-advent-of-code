@@ -1,7 +1,8 @@
 import Async from 'crocks/Async'
 import assign from 'crocks/helpers/assign'
+import chain from 'crocks/pointfree/chain'
 import compose from 'crocks/helpers/compose'
-import curry from 'crocks/core/curry'
+import curry from 'crocks/helpers/curry'
 import defaultProps from 'crocks/helpers/defaultProps'
 import identity from 'crocks/combinators/identity'
 import isDefined from 'crocks/predicates/isDefined'
@@ -14,6 +15,7 @@ import unsetProp from 'crocks/helpers/unsetProp'
 export {
   Async,
   assign,
+  chain,
   compose,
   curry,
   defaultProps,
