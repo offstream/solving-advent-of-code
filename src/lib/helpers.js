@@ -32,5 +32,5 @@ export const asyncReadFile = Async.fromPromise(readFile)
 
 // readSiblingInputFile :: (Obj, ?Str) -> Async e Str
 export const readSiblingInputFile =
-  (inputMeta, sibling = 'input.text') =>
+  (inputMeta, sibling = 'input.txt') =>
     asyncReadFile(getPathToSiblingFile(inputMeta, sibling), 'utf-8')

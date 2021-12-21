@@ -21,5 +21,5 @@ export const __logError = e => {
 }
 
 // __readSiblingInputFile :: (String, ?String) -> String
-export const __readSiblingInputFile = (metaObj, filename = 'input.text') =>
+export const __readSiblingInputFile = (metaObj, filename = 'input.txt') =>
   fs.readFileSync(getPathToSiblingFile(metaObj, filename), 'utf-8')
