@@ -6,6 +6,8 @@ import defaultProps from 'crocks/helpers/defaultProps'
 import identity from 'crocks/combinators/identity'
 import isDefined from 'crocks/predicates/isDefined'
 import isFunction from 'crocks/predicates/isFunction'
+import isSameType from 'crocks/predicates/isSameType'
+import map from 'crocks/pointfree/map'
 import objOf from 'crocks/helpers/objOf'
 import unsetProp from 'crocks/helpers/unsetProp'
 
@@ -18,6 +20,8 @@ export {
   identity,
   isDefined,
   isFunction,
+  isSameType,
+  map,
   objOf,
   unsetProp,
 }
