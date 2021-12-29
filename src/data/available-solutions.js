@@ -9,7 +9,6 @@ export default [
       {
         day: '02',
         title: 'Password Philosophy',
-        isCurrent: true,
       },
     ],
   },
