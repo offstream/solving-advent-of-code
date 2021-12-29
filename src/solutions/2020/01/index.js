@@ -4,9 +4,6 @@ import { get2020Pair, get2020Triplet } from './logic'
 
 // solvePartOne :: [ Num ] -> [ Str ]
 const solvePartOne = input => {
-  if (!input) {
-    return [ 'OH NO' ]
-  }
   const pair = get2020Pair(input)
   return pair ? [
     strfmt('Found pair of values that sum to 2020: %d and %d', ...pair),
@@ -18,9 +15,6 @@ const solvePartOne = input => {
 
 // solvePartTwo :: [ Num ] -> [ Str ]
 const solvePartTwo = input => {
-  if (!input) {
-    return [ 'OH NO' ]
-  }
   const triplet = get2020Triplet(input)
   return triplet ? [
     strfmt('Found triplet of values that sum to 2020: %d, %d, and %d', ...triplet),
